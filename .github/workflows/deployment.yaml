@@ -20,6 +20,9 @@ jobs:
     environment: AWS
     # 작업 단계
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       # 도커 멀티 플랫폼(amd64,arm64 등) 빌드를 위한 설정
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
