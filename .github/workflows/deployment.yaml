@@ -1,5 +1,7 @@
+# workflow 이름
 name: docker-deploy
 
+# 지정 브랜치에서 push 또는 PR 발생 시 action 실행
 on:
   push:
     branches:
@@ -8,10 +10,15 @@ on:
     branches:
       - main
 
+# 작업
 jobs:
+  # 배포
   deploy:
+    # 서버를 실행할 환경(Ubuntu)
     runs-on: ubuntu-latest
+    # Git Action 환경변수 이름
     environment: AWS
+    # 작업 단계
     steps:
       - name: EC2 ssh connection and deploy
         uses: appleboy/ssh-action@master
@@ -21,4 +28,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}  # pem 파일 내용
           command_timeout: 5m	 #timeout 시간 설정
           script: |
-            mkdir test/test1
+            mkdir test
