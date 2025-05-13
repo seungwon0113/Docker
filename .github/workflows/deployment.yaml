@@ -38,4 +38,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}  # pem 파일 내용
           command_timeout: 5m	 #timeout 시간 설정
           script: |
-            docker info | grep Username
+            docker info
