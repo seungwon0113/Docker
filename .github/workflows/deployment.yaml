@@ -42,4 +42,4 @@ jobs:
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest
-            docker ps
+            docker compose up -d --build

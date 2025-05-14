@@ -29,7 +29,7 @@ print(f"SECRET_KEY: {SECRET_KEY}")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["15.164.163.123", "0.0.0.0"]
+ALLOWED_HOSTS = ["43.201.38.195", "0.0.0.0"]
 
 
 # Application definition
