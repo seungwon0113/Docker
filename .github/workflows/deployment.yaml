@@ -1,12 +1,10 @@
+# .github/workflows/deployment.yaml
 # workflow 이름
 name: docker-deploy
 
-# 지정 브랜치에서 push 또는 PR 발생 시 action 실행
+# 지정 브랜치(main)에 push 할 때 action 실행 << 실제 개발시에 변경해 주셔야 합니다!
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -14,20 +12,21 @@ on:
 jobs:
   # 배포
   deploy:
-    # 서버를 실행할 환경(Ubuntu)
+    # GitHub Actions가 실행될 OS 환경(Ubuntu)
     runs-on: ubuntu-latest
     # Git Action 환경변수 이름
     environment: AWS
     # 작업 단계
     steps:
+	    # 내 레포지토리 코드를 runner에 복제(checkout)
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
       # 도커 멀티 플랫폼(amd64,arm64 등) 빌드를 위한 설정
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      # 로컬 환경에서 로그인
+      # DockerHub 이미지 푸시를 위해 로그인
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -36,8 +35,8 @@ jobs:
       # 도커 이미지 빌드 및 푸시
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest
 
       - name: EC2 ssh connection and deploy
         uses: appleboy/ssh-action@master
@@ -47,6 +46,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}  # pem 파일 내용
           command_timeout: 5m	 #timeout 시간 설정
           script: |
-            script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
-            
+            df -h
