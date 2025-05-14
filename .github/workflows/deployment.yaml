@@ -40,5 +40,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}  # pem 파일 내용
           command_timeout: 5m	 #timeout 시간 설정
           script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest
             docker ps
