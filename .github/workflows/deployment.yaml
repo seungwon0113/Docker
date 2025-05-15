@@ -40,5 +40,6 @@ jobs:
           command_timeout: 5m	 #timeout 시간 설정
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+            docker compose down
             docker compose up -d --build
             docker rmi $(docker images -f "dangling=true" -q)
