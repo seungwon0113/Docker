@@ -28,8 +28,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
       - name: EC2 ssh connection and deploy
         uses: appleboy/ssh-action@master
@@ -39,5 +39,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}  # pem 파일 내용
           command_timeout: 5m	 #timeout 시간 설정
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/docker_aws:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
             docker compose up -d --build
+            docker rmi $(docker images -f "dangling=true" -q)
