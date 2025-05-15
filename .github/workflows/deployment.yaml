@@ -13,7 +13,6 @@ jobs:
   # 배포
   deploy:
     runs-on: ubuntu-latest
-    environment: AWS
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
